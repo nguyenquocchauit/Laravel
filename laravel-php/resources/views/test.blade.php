@@ -3,5 +3,6 @@
 <div style="text-align:center;">
 <strong>using command 'composer update'</strong> <br>
 <strong> create new file .env and copy data .env.example file to .env file </strong> <br>
-<strong> using command 'php artisan key:generate'</strong> <bsr>
+<strong> using command 'php artisan key:generate' </strong> <br>
+<strong>test</strong>
 </div>
