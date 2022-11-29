@@ -98,7 +98,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        //return response()->json(['success' => 'Product deleted successfully.']);
-        return redirect()->route('users.index');
+        return json_encode(array('statusCode'=>200));
+        //return response()->json_encode(['success' => 'Customer deleted successfully.']);
+        //return redirect()->route('users.index');
     }
 }

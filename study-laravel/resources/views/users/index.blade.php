@@ -43,6 +43,7 @@
                                     @method('DELETE')
                                     @csrf
                                 </form> --}}
+                                {{-- data-url="{{ route('users.destroy', $user->id) }}" --}}
                                 <button data-id="{{ $user->id }}" class="btn btn-danger btn-delete">Delete</button>
                             </td>
                         </tr>
@@ -65,10 +66,11 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            Click Button Delete ID
+
             $('.btn-delete').on('click', function() {
                 var _id = $(this).data('id')
-                console.log(_id);
+                var _token = $('meta[name="csrf-token"]').attr('content');
+                console.log(_id + _token);
                 Swal.fire({
                     title: 'Are you sure you want to delete?',
                     text: "Deletion cannot be undone!",
@@ -82,14 +84,22 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: "DELETE",
-
+                            url: "/api/delete/" + _id,
+                            data: {
+                                "_token": _token,
+                            },
                             success: function(response) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Deleted!',
-                                    timer: 1200,
-                                    timerProgressBar: true,
-                                })
+                                var response = JSON.parse(response);
+                                console.log(response);
+                                if (response.statusCode == 200) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Deleted!',
+                                        timer: 1200,
+                                        timerProgressBar: true,
+                                    })
+                                }
+
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
                                 // xử lý lỗi

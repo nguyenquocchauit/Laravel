@@ -32,5 +32,5 @@ Route::get('users/{id}/edit', [UserController::class,'edit'])->name('users.edit'
 
 Route::put('users/{id}/update', [UserController::class,'update'])->name('users.update')->middleware('auth');
 
-Route::delete('/users/{id}/destroy', [UserController::class,'destroy'])->name('users.destroy')->middleware('auth');
+//Route::delete('/users/destroy/{id}', [UserController::class,'destroy'])->name('users.destroy')->middleware('auth');
 
