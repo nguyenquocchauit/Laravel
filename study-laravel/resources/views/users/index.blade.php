@@ -38,14 +38,12 @@
                                         class="btn btn-warning">Edit</button></a>
                             </td>
                             <td>
-                                <form id="deleteForm{{ $user->id }}" action="{{ route('users.destroy', $user->id) }}"
+                                {{-- <form id="deleteForm{{ $user->id }}" action="{{ route('users.destroy', $user->id) }}"
                                     method="post">
                                     @method('DELETE')
                                     @csrf
-
-                                </form>
-                                <button data-form="deleteForm{{ $user->id }}"
-                                    class="btn btn-danger btn-delete">Delete</button>
+                                </form> --}}
+                                <button data-id="{{ $user->id }}" class="btn btn-danger btn-delete">Delete</button>
                             </td>
                         </tr>
                     @endforeach
@@ -61,42 +59,46 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            let _massage = $('#message').val();
-            switch(_massage)
-            {
-                case "Create success":
+            //Pass Header Token
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            Click Button Delete ID
+            $('.btn-delete').on('click', function() {
+                var _id = $(this).data('id')
+                console.log(_id);
+                Swal.fire({
+                    title: 'Are you sure you want to delete?',
+                    text: "Deletion cannot be undone!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sure',
+                    cancelButtonText: "Cancel",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "DELETE",
 
-break;
-            }
-            // $('.btn-delete').on('click', function() {
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Deleted!',
+                                    timer: 1200,
+                                    timerProgressBar: true,
+                                })
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                // xử lý lỗi
+                            }
+                        })
 
-            //     let dataForm = $(this).data('form');
-            //     Swal.fire({
-            //         title: 'Are you sure you want to delete?',
-            //         text: "Deletion cannot be undone!",
-            //         icon: 'warning',
-            //         showCancelButton: true,
-            //         confirmButtonColor: '#3085d6',
-            //         cancelButtonColor: '#d33',
-            //         confirmButtonText: 'Sure',
-            //         cancelButtonText: "Cancel",
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-
-            //             Swal.fire({
-            //                 icon: 'success',
-            //                 title: 'Deleted!',
-            //                 timer: 1200,
-            //                 timerProgressBar: true,
-            //             }).then((result) => {
-            //                 if (result.dismiss === Swal.DismissReason.timer) {
-            //                     $(`#${dataForm}`).submit()
-            //                 }
-            //             })
-
-            //         }
-            //     });
-            // });
+                    }
+                });
+            });
         })
     </script>
 @endsection

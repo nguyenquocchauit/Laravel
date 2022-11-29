@@ -22,7 +22,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('users', [UserController::class,'index'])->name('users.index')->middleware('auth');
+Route::get('/users', [UserController::class,'index'])->name('users.index')->middleware('auth');
 
 Route::get('users/create', [UserController::class,'create'])->name('users.create')->middleware('auth');
 
@@ -32,5 +32,5 @@ Route::get('users/{id}/edit', [UserController::class,'edit'])->name('users.edit'
 
 Route::put('users/{id}/update', [UserController::class,'update'])->name('users.update')->middleware('auth');
 
-Route::delete('users/{id}/destroy', [UserController::class,'destroy'])->name('users.destroy')->middleware('auth');
+Route::delete('/users/{id}/destroy', [UserController::class,'destroy'])->name('users.destroy')->middleware('auth');
 

@@ -98,6 +98,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
+        //return response()->json(['success' => 'Product deleted successfully.']);
         return redirect()->route('users.index');
     }
 }
