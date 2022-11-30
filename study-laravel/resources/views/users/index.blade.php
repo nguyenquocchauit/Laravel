@@ -127,7 +127,10 @@
                             password: _password,
                             address: _address,
                         },
-                        success: function(response) {}
+                        success: function(response) {
+                            var response = JSON.parse(response);
+                            console.log(response);
+                        }
                     })
                 }
 

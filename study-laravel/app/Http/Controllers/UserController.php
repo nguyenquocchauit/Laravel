@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Validator as ValidationValidator;
 
 class UserController extends Controller
 {
@@ -41,9 +43,12 @@ class UserController extends Controller
     {
         $dataCreate = $request->all();
         $dataCreate['password'] = Hash::make($request->password);
-        $user = User::create($dataCreate);
+        $valdidator = $request->validated();
+        $errors = $valdidator->errors();
+        return json_encode($errors);
+        //$user = User::create($dataCreate);
 
-        return redirect()->route('users.index')->with(['message' => "Create success"]);
+        //return redirect()->route('users.index')->with(['message' => "Create success"]);
     }
 
     /**
