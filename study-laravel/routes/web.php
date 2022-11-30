@@ -22,15 +22,17 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/users', [UserController::class,'index'])->name('users.index')->middleware('auth');
+Route::middleware(['auth'])->name('users.')->prefix('users')->controller(UserController::class)->group(function(){
+    Route::get('/' ,'index')->name('index');
 
-Route::get('users/create', [UserController::class,'create'])->name('users.create')->middleware('auth');
+    Route::get('/create' ,'create')->name('create');
 
-Route::post('users/store', [UserController::class,'store'])->name('users.store')->middleware('auth');
+    Route::post('/store','store')->name('store');
 
-Route::get('users/{id}/edit', [UserController::class,'edit'])->name('users.edit')->middleware('auth');
+    Route::get('/{id}/edit' ,'edit')->name('edit');
 
-Route::put('users/{id}/update', [UserController::class,'update'])->name('users.update')->middleware('auth');
+    Route::put('/{id}/update' ,'update')->name('update');
+});
 
-//Route::delete('/users/destroy/{id}', [UserController::class,'destroy'])->name('users.destroy')->middleware('auth');
+
 

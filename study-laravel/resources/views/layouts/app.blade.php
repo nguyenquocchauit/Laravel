@@ -16,6 +16,20 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    <style type="text/css">
+        #form-create-user .modal-content {
+            background-color: #d4d7d9;
+        }
+
+        #form-create-user .modal-title {
+            text-transform: uppercase
+        }
+
+        #form-create-user .btn-close-create-user {
+            translate: 450% -10px;
+        }
+    </style>
 </head>
 
 <body>

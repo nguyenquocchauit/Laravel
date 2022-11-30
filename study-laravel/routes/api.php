@@ -20,4 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::middleware('auth:sanctum')->name('users.')->controller(UserController::class)->group(function() {
+    Route::delete('/delete/{id}', 'destroy')->name('destroy');
+    Route::post('/store', 'store')->name('store');
+});
+

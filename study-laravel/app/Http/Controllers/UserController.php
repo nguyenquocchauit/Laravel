@@ -96,9 +96,22 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
-        return json_encode(array('statusCode'=>200));
+        $res = User::find($id);
+        if ($res != null) {
+            $res->delete();
+            $data = [
+                'status' => '1',
+                'msg' => 'Success'
+            ];
+        } else
+        if ($res == null)
+            $data = [
+                'status' => '0',
+                'msg' => 'Fail'
+            ];
+
+        return json_encode($data);
+        // return json_encode(array('statusCode'=>200));
         //return response()->json_encode(['success' => 'Customer deleted successfully.']);
         //return redirect()->route('users.index');
     }
