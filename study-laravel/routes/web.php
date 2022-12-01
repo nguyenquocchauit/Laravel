@@ -24,14 +24,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware(['auth'])->name('users.')->prefix('users')->controller(UserController::class)->group(function(){
     Route::get('/' ,'index')->name('index');
-
-    Route::get('/create' ,'create')->name('create');
-
-    Route::post('/store','store')->name('store');
-
-    Route::get('/{id}/edit' ,'edit')->name('edit');
-
-    Route::put('/{id}/update' ,'update')->name('update');
 });
 
 

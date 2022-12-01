@@ -20,8 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:sanctum')->name('users.')->controller(UserController::class)->group(function() {
+Route::middleware('auth:sanctum')->name('users.')->controller(UserController::class)->group(function () {
     Route::delete('/delete/{id}', 'destroy')->name('destroy');
     Route::post('/store', 'store')->name('store');
+    Route::get('/edit/{id}', 'edit')->name('edit');
+    Route::put('/update/{id}', 'update')->name('update');
 });
-

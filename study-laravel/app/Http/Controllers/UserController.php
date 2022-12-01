@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Validator as ValidationValidator;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\Console\Input\Input;
 
 class UserController extends Controller
 {
@@ -39,16 +39,24 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateUserRequest $request)
+    public function store(Request $request)
     {
         $dataCreate = $request->all();
         $dataCreate['password'] = Hash::make($request->password);
-        $valdidator = $request->validated();
-        $errors = $valdidator->errors();
-        return json_encode($errors);
-        //$user = User::create($dataCreate);
 
-        //return redirect()->route('users.index')->with(['message' => "Create success"]);
+        $validator = Validator::make($request->all(), [
+            'email' => 'required | email|unique:users,email',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array(
+                'status' => $validator->getMessageBag()->toArray()
+            ), 200);
+        } else {
+            $user = User::create($dataCreate);
+            return response()->json([
+                'status' => 'Create successfully!'
+            ], 200);
+        }
     }
 
     /**
@@ -70,8 +78,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        return view('users.edit', compact('user'));
+        $user = User::find($id);
+        return response()->json([
+            'status' => 200,
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -81,16 +92,29 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
         $dataUpdate = $request->except('password');
-        if ($request->password) {
-            $dataUpdate['password'] = Hash::make($request->password);
+        // if ($request->password) {
+        //     return response()->json([
+        //         'status' => 'Update password!'
+        //     ], 200);
+        //     $dataUpdate['password'] = Hash::make($request->password);
+        // }
+        $validator = Validator::make($request->all(), [
+            'email' => 'required | email|unique:users,email,' . $id,
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array(
+                'status' => $validator->getMessageBag()->toArray()
+            ), 200);
+        } else {
+            $user->update($dataUpdate);
+            return response()->json([
+                'status' => 'Update successfully!'
+            ], 200);
         }
-        $user->update($dataUpdate);
-
-        return redirect()->route('users.index');
     }
 
     /**
@@ -109,15 +133,12 @@ class UserController extends Controller
                 'msg' => 'Success'
             ];
         } else
-        if ($res == null)
+        if ($res == null) {
             $data = [
                 'status' => '0',
                 'msg' => 'Fail'
             ];
-
-        return json_encode($data);
-        // return json_encode(array('statusCode'=>200));
-        //return response()->json_encode(['success' => 'Customer deleted successfully.']);
-        //return redirect()->route('users.index');
+        }
+        return response()->json($data, 200);
     }
 }

@@ -29,6 +29,18 @@
         #form-create-user .btn-close-create-user {
             translate: 450% -10px;
         }
+
+        #form-edit-user .modal-content {
+            background-color: #d4d7d9;
+        }
+
+        #form-edit-user .modal-title {
+            text-transform: uppercase
+        }
+
+        #form-edit-user .btn-close-edit-user {
+            translate: 450% -10px;
+        }
     </style>
 </head>
 
