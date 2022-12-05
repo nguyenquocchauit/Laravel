@@ -96,18 +96,16 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $dataUpdate = $request->except('password');
-        // if ($request->password) {
-        //     return response()->json([
-        //         'status' => 'Update password!'
-        //     ], 200);
-        //     $dataUpdate['password'] = Hash::make($request->password);
-        // }
+        if ($request->password) {
+            $dataUpdate['password'] = Hash::make($request->password);
+        }
         $validator = Validator::make($request->all(), [
             'email' => 'required | email|unique:users,email,' . $id,
         ]);
         if ($validator->fails()) {
             return response()->json(array(
-                'status' => $validator->getMessageBag()->toArray()
+                'status' => 'Already email',
+                'error' => $validator->getMessageBag()->toArray()
             ), 200);
         } else {
             $user->update($dataUpdate);

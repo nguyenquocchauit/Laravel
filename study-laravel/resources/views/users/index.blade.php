@@ -58,7 +58,7 @@
         </div>
     </div>
 @endsection
-@include('models/modaluser')
+@include('modals/modaluser')
 @section('script')
     <script>
         $(document).ready(function() {
@@ -221,15 +221,15 @@
                         timer: 1500,
                         timerProgressBar: true,
                     })
-                } else if (_password.length != 0 || _password != "") {
-                    if (_password.length < 6)
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Please enter a password of at least 6 characters!',
-                            timer: 1500,
-                            timerProgressBar: true,
-                        })
+                } else if ((_password.length != 0 || _password != "") && _password.length < 6) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Please enter a password of at least 6 characters!',
+                        timer: 1500,
+                        timerProgressBar: true,
+                    })
                 } else {
+
                     $.ajax({
                         type: "PUT",
                         url: "/api/update/" + _id,
@@ -242,7 +242,7 @@
                         },
                         success: function(response) {
                             console.log(response);
-                            if (response.status.email == 'The email has already been taken.') {
+                            if (response.status == 'Already email') {
                                 Swal.fire({
                                     icon: 'warning',
                                     title: 'The email has already been taken!',
